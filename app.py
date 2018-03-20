@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request
-from models import db,settingss
+from models import db,settings
 from forms import AddZone
-
+import os
 
 
 app = Flask (__name__)
 
-app.config ['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ambo123@localhost/amboDB'
+if os.environ.get('ENV') == 'production':
+	app.config ['SQLALCHEMY_DATABASE_URI'] = os.environ.get ('DATABASE_URL')
+else
+	app.config ['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ambo123@localhost/amboDB'
 
 app.config['SECRET_KEY'] = 'DontTellAnyOne'
 db.init_app(app)
@@ -25,12 +28,10 @@ def addZone():
 	
 	if request.method == 'POST':
 	#	return "The Zone is: " + form.ZoneName.data #get handle to data....
-		settingsObject = settingss(form.ZoneName.data,form.BulbID.data)
+		settingsObject = settings(form.ZoneName.data,form.BulbID.data)
 		
-	
-		
-		#db.session.add(settingsObject)
-		#db.session.commit()
+		db.session.add(settingsObject)
+		db.session.commit()
 		return "success"
 	
 	
