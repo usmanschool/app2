@@ -8,7 +8,7 @@ app = Flask (__name__)
 
 if os.environ.get('ENV') == 'production':
 	app.config ['SQLALCHEMY_DATABASE_URI'] = os.environ.get ('DATABASE_URL')
-else
+else:
 	app.config ['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ambo123@localhost/amboDB'
 
 app.config['SECRET_KEY'] = 'DontTellAnyOne'
