@@ -38,9 +38,9 @@ def addZone():
 	
 	elif request.method == 'GET':
 		
-		return render_template("addZone.html" , form = form)
+		return render_template("AddZone.html" , form = form)
 
-		return render_template("addZone.html")
+		#return render_template("addZone.html")
 
 	
 	
