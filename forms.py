@@ -16,7 +16,10 @@ class AddZoneForm(FlaskForm):
 	zonebrightnessupperbound = IntegerField ('Zone Maximum Brightness',validators = [InputRequired(), NumberRange(min=0, max=250)])
 	
 
-
+class AdjustBrightnessForm(FlaskForm):
+	Override = IntegerField ('Override On/Off',validators = [InputRequired(), NumberRange(min=0, max=1)])
+	Brightness = IntegerField ('Brightness',validators = [InputRequired(), NumberRange(min=0, max=255)])
+	
 	
 class LoginForm(FlaskForm):
 	username = StringField('Username', validators=[InputRequired(), Length(min=1, max=100)])

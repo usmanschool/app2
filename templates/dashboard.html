@@ -56,7 +56,7 @@ Dashboard
                 <tr>
 					<th>Zone Name</th>
 					<th>Bulbs</th>
-					<th>Current Brightness Setting</th>
+					<th>Current Brightness</th>
 					<th>Light Sensor ID</th>
 					<th>Override flag</th>
 					<th>Energy Saver Mode</th>
@@ -76,8 +76,8 @@ Dashboard
 					<td>{{zone.energysavingmode}}</td>
 					<td>{{zone.zonebrightnesslowerbound}}</td>
 					<td>{{zone.zonebrightnessupperbound}}</td>
-					<td><a href="{{url_for('manualAdjust')}}" class="btn btn-primary">Manual Mode</a></td>
-					<td><a href="{{url_for('modifyZone', zoneid = zone.zoneid)}}" class="btn btn-primary">Edit Zone</a></td>
+					<td><a href="{{url_for('manualAdjust' , zoneid = zone.zoneid)}}" class="btn btn-primary">Override Settings</a></td>
+					<td><a href="{{url_for('modifyZone', zoneid = zone.zoneid)}}" class="btn btn-primary">Edit</a></td>
 				  </tr>
 				{%endfor%}
               </tbody>

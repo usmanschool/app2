@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for,session
 from models import db,settings,accounts,zonetable
-from forms import AddZoneForm, LoginForm, RegisterForm
+from forms import AddZoneForm, LoginForm, RegisterForm, AdjustBrightnessForm
 from flask_bootstrap import Bootstrap
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -118,6 +118,48 @@ def modifyZone():
 	
 
 	
+@app.route('/manualAdjust',methods = ['GET','POST'])
+@login_required
+def manualAdjust():
+
+	form = AdjustBrightnessForm()
+
+	if 'zoneid' in request.args:
+		id = request.args.get('zoneid', None)
+		session['curzoneid'] = id
+		thezone = zonetable.query.filter_by(zoneid= id).first()
+		form.Override.data = thezone.overrideflag
+		form.Brightness.data = thezone.brightnesssetting
+
+
+	#when you change it save it.
+	if form.validate_on_submit():
+		id = session.get('curzoneid', None)
+		mazone = zonetable.query.filter_by(zoneid= id).first()
+		mazone.overrideflag = form.Override.data
+		mazone.brightnesssetting = form.Brightness.data
+		db.session.commit()
+		session.pop('curzoneid')
+		return redirect(url_for('dashboard'))
+
+	return render_template('manualAdjust.html',form = form)	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -137,10 +179,7 @@ def logout():
 
 	
 
-@app.route('/manualAdjsut')
-@login_required
-def manualAdjust():
-	return render_template('manualAdjust.html')
+
 	
 	
 	
