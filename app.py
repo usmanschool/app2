@@ -80,7 +80,7 @@ def addZone():
 		db.session.commit()
 		return redirect(url_for('dashboard'))	
 
-	return render_template('addZone.html',form = form)
+	return render_template('additionalzone.html',form = form)
 
 
 	
