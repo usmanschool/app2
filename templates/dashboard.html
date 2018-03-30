@@ -71,8 +71,7 @@ Dashboard
 					<td>{{zone.zonebrightnesslowerbound}}</td>
 					<td>{{zone.zonebrightnessupperbound}}</td>
 					<td><a href="{{url_for('manualAdjust')}}" class="btn btn-primary">Manual Mode</a></td>
-					<td><a href="{{url_for('modifyZone', zoneid = zone.zoneid)}}" class="btn btn-primary">edit Zone</a></td>
-
+					<td><a href="{{url_for('modifyZone', zoneid = zone.zoneid)}}" class="btn btn-primary">Edit Zone</a></td>
 				  </tr>
 				{%endfor%}
               </tbody>
