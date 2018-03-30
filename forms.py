@@ -2,16 +2,21 @@
 
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField,PasswordField
+from wtforms import StringField, SubmitField,PasswordField,IntegerField
 
-from wtforms.validators import InputRequired, Length
+from wtforms.validators import InputRequired, Length,NumberRange
 
 
-class AddZone(FlaskForm):
-	ZoneName = StringField('Zone Name')
-	BulbID = StringField ('List of Bulb IDs')
-	submit = SubmitField ('Create')
+class AddZoneForm(FlaskForm):
+	#ZoneId = IntegerField('zoneid')
+	ZoneName = StringField('Zone Name', validators=[InputRequired(), Length(min=1, max=100)])
+	BulbID = StringField ('List of Bulb IDs present in the zone', validators=[InputRequired(), Length(min=1, max=100)])
+	LightSensorId = IntegerField ('Light Sensor ID',validators=[InputRequired()])
+	zonebrightnesslowerbound = IntegerField ('Zone Lowest Brightness',validators = [InputRequired(), NumberRange(min=0, max=250)])
+	zonebrightnessupperbound = IntegerField ('Zone Maximum Brightness',validators = [InputRequired(), NumberRange(min=0, max=250)])
 	
+
+
 	
 class LoginForm(FlaskForm):
 	username = StringField('Username', validators=[InputRequired(), Length(min=1, max=100)])

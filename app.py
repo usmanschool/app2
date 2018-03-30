@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
-from models import db,settings,accounts
-from forms import AddZone, LoginForm, RegisterForm
+from flask import Flask, render_template, request, redirect, url_for,session
+from models import db,settings,accounts,zonetable
+from forms import AddZoneForm, LoginForm, RegisterForm
 from flask_bootstrap import Bootstrap
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -63,15 +63,67 @@ def signup():
 		db.session.add(new_user)
 		db.session.commit()
 
-		return '<h1>New user has been created!</h1>'
+		return redirect(url_for('index'))	
 		#return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
 
 	return render_template('signup.html', form=form)
+	
+	
+	
+@app.route('/addZone', methods = ['GET','POST'])
+@login_required
+def addZone():
+	form = AddZoneForm()
+	if form.validate_on_submit():
+		newZone = zonetable(uid = current_user.id,zonename = form.ZoneName.data,bulbid = form.BulbID.data,brightnesssetting = 0,lightsensorid = form.LightSensorId.data, overrideflag = 0, energysavingmode = 0, zonebrightnesslowerbound = form.zonebrightnesslowerbound.data, zonebrightnessupperbound = form.zonebrightnessupperbound.data)
+		db.session.add(newZone)
+		db.session.commit()
+		return redirect(url_for('dashboard'))	
 
+	return render_template('addZone.html',form = form)
+
+
+	
+@app.route('/modifyZone',methods = ['GET','POST'])
+@login_required
+def modifyZone():
+
+	form = AddZoneForm()
+
+	#bla bla bla initialize data........
+	if 'zoneid' in request.args:
+		id = request.args.get('zoneid', None)
+		session['curzoneid'] = id
+		thezone = zonetable.query.filter_by(zoneid= id).first()
+		form.ZoneName.data = thezone.zonename
+		form.BulbID.data = thezone.bulbid
+		form.LightSensorId.data = thezone.lightsensorid
+		form.zonebrightnesslowerbound.data = thezone.zonebrightnesslowerbound
+		form.zonebrightnessupperbound.data = thezone.zonebrightnessupperbound
+
+	#when you change it save it.
+	if form.validate_on_submit():
+		id = session.get('curzoneid', None)
+		mazone = zonetable.query.filter_by(zoneid= id).first()
+		mazone.zonename = form.ZoneName.data
+		mazone.bulbid = form.BulbID.data
+		mazone.lightsensorid = form.LightSensorId.data
+		mazone.zonebrightnesslowerbound = form.zonebrightnesslowerbound.data
+		mazone.zonebrightnessupperbound = form.zonebrightnessupperbound.data
+		db.session.commit()
+		session.pop('curzoneid')
+		return redirect(url_for('dashboard'))	
+
+	return render_template('modifyZone.html',form = form)	
+	
+
+	
 @app.route('/dashboard')
 @login_required
 def dashboard():
-	return render_template('dashboard.html', name=current_user.username)
+	myzones = zonetable.query.filter_by(uid=current_user.id).all()
+	return render_template('dashboard.html', name=current_user.username,myid = current_user.id,zoneList = myzones)
+
 
 @app.route('/logout')
 @login_required
@@ -80,54 +132,40 @@ def logout():
 	return redirect(url_for('index'))	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-@app.route('/addZone' ,methods = ['GET' , 'POST'])
-def addZone():
-	form = AddZone()
-	
-	if request.method == 'POST':
-	#	return "The Zone is: " + form.ZoneName.data #get handle to data....
-		settingsObject = settings(form.ZoneName.data,form.BulbID.data)
-		
-		db.session.add(settingsObject)
-		db.session.commit()
-		return "success"
-	
-	
-	
-	elif request.method == 'GET':
-		
-		return render_template("AddZone.html" , form = form)
 
-		#return render_template("addZone.html")
+	
 
+	
+
+@app.route('/manualAdjsut')
+@login_required
+def manualAdjust():
+	return render_template('manualAdjust.html')
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
