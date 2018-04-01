@@ -1,3 +1,5 @@
+
+  
 /*
  * Base structure
  */
@@ -71,6 +73,7 @@ body {
  * Main content
  */
 
+
 .main {
   padding: 20px;
 }
@@ -85,35 +88,14 @@ body {
 }
 
 
-/*
- * Placeholder dashboard ideas
- */
 
-.placeholders {
-  margin-bottom: 30px;
-  text-align: center;
-}
-.placeholders h4 {
-  margin-bottom: 0;
-}
-.placeholder {
-  margin-bottom: 20px;
-}
-.placeholder img {
-  display: inline-block;
-  border-radius: 50%;
-}
+  .buttonspacing {
+	padding: 3px;
 
-
-.modifyZone {
-	background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+  }
+  
+  
+  .table td {
+   text-align: center;   
 }
-
-
+  

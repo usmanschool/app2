@@ -38,3 +38,10 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.tips {
+	color :orange;
+	margin-top: 1px;
+	}
+
+

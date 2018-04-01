@@ -160,12 +160,87 @@ def manualAdjust():
 	
 	
 	
-@app.route('/dashboard')
+@app.route('/dashboard',methods = ['GET','POST'])
 @login_required
 def dashboard():
 	myzones = zonetable.query.filter_by(uid=current_user.id).all()
 	return render_template('dashboard.html', name=current_user.username,myid = current_user.id,zoneList = myzones)
 
+
+@app.route('/disableAllLights',methods = ['GET','POST'])
+@login_required
+def disableAllLights():
+	print ("disable lights please")
+	myzones = zonetable.query.filter_by(uid=current_user.id).all()
+	
+	for zone in myzones:
+		zone.overrideflag = 1;
+		zone.brightnesssetting = 0;
+	
+	db.session.commit()
+	return redirect(url_for('dashboard'))
+	#return ('', 204)
+	
+	
+	
+
+@app.route('/enableAllLights',methods = ['GET','POST'])
+@login_required
+def enableAllLights():
+	print ("enable lights pelase")
+	myzones = zonetable.query.filter_by(uid=current_user.id).all()
+	for zone in myzones:
+		zone.overrideflag = 0;
+		zone.brightnesssetting = 10;
+
+	db.session.commit()
+	return redirect(url_for('dashboard'))
+	#return ('', 204	)
+	
+	
+	
+	
+@app.route('/energySavingModeOn',methods = ['GET','POST'])
+@login_required
+def energySavingModeOn():
+	print ("energy saving mode please")
+	myzones = zonetable.query.filter_by(uid=current_user.id).all()
+	
+	for zone in myzones:
+		zone.energysavingmode = 1;
+	
+	db.session.commit()
+	return redirect(url_for('dashboard'))
+
+	
+	#return ('', 204)
+		
+
+@app.route('/energySavingModeOff',methods = ['GET','POST'])
+@login_required
+def energySavingModeOff():
+	print ("energy saving mode off please")
+	myzones = zonetable.query.filter_by(uid=current_user.id).all()
+		
+	for zone in myzones:
+		zone.energysavingmode = 0;
+	
+	db.session.commit()
+	return redirect(url_for('dashboard'))
+
+	#return ('', 204)
+
+
+@app.route('/deleteZone',methods = ['GET','POST'])
+@login_required
+def deleteZone():
+	id = request.args.get('zoneid', None)
+	zonetable.query.filter_by(zoneid=id).delete()
+	db.session.commit()
+	return redirect(url_for('dashboard'))
+
+
+	
 
 @app.route('/logout')
 @login_required

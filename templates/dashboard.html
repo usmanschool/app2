@@ -44,7 +44,7 @@ Dashboard
           <h1 class="page-header">Welcome, {{ name }}</h1>
 		  <p class="h5">You can adjust the lighting system using the controls below.</p>
 		  <div class="text-right">
-			<a href="{{url_for('addZone')}}" class="btn btn-primary">Add New Zone</a>
+			<a href="{{url_for('addZone')}}" class="btn btn-success">Add New Zone</a>
 		  </div>
           <h2 class="sub-header">Zone Information Table</h2>
 
@@ -76,8 +76,9 @@ Dashboard
 					<td>{{zone.energysavingmode}}</td>
 					<td>{{zone.zonebrightnesslowerbound}}</td>
 					<td>{{zone.zonebrightnessupperbound}}</td>
-					<td><a href="{{url_for('manualAdjust' , zoneid = zone.zoneid)}}" class="btn btn-primary">Override Settings</a></td>
-					<td><a href="{{url_for('modifyZone', zoneid = zone.zoneid)}}" class="btn btn-primary">Edit</a></td>
+					<td><a href="{{url_for('manualAdjust' , zoneid = zone.zoneid)}}" class="btn btn-primary">Manual</a></td>
+					<td><a href="{{url_for('modifyZone', zoneid = zone.zoneid)}}" class="btn btn-warning">Edit</a></td>
+					<td><a href="{{url_for('deleteZone', zoneid = zone.zoneid)}}" class="btn btn-danger">Delete Zone</a></td>
 				  </tr>
 				{%endfor%}
               </tbody>
@@ -86,4 +87,26 @@ Dashboard
         </div>
       </div>
     </div>
+	
+		<div class="text-center">
+				<form  class = "buttonspacing" method="POST" action="/disableAllLights">
+					<button class="btn btn-secondary btn-lg" type="submit">Turn off all Lights</button>
+				</form>
+				
+				<form  class="buttonspacing" method="POST" action="/enableAllLights">
+					   <button class="btn btn-warning btn-lg" type="submit">Turn on all Lights</button>
+				</form>
+				
+				<form  class="buttonspacing" method="POST" action="/energySavingModeOn">
+					<button class="btn btn-success btn-lg" type="submit">Energy Saving on</button>
+				</form>
+				
+				<form  class="buttonspacing" method="POST" action="/energySavingModeOff">
+					<button class="btn btn-primary btn-lg" type="submit">Energy Saving off</button>
+				</form>
+			</div>
+
+
+
+
 {% endblock %}
